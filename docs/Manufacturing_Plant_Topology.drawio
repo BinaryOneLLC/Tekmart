@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" modified="2026-08-27" version="21.0.0">
+  <diagram name="Manufacturing Plant Topology" id="topology-main">
+    <mxGraphModel dx="1900" dy="1300" grid="1" gridSize="10" guides="1" tooltips="1"
+                  connect="1" arrows="1" fold="1" page="1" pageScale="1"
+                  pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <!-- LEGEND / PATH CALLOUT                             -->
+        <!-- ═══════════════════════════════════════════════════ -->
+        <mxCell id="legend" value="&lt;b&gt;TWO SEPARATE VPN PATHS:&lt;/b&gt;&lt;br&gt;
+&lt;b&gt;PATH 1 – SITE-TO-SITE:&lt;/b&gt; Plant → ASA 5515-X → IPSec Tunnel → DC ASA 5545-X&lt;br&gt;
+&lt;b&gt;PATH 2 – REMOTE ACCESS:&lt;/b&gt; Remote Users → Internet → DC ASA 5545-X &lt;b&gt;DIRECTLY&lt;/b&gt; (Plant NOT involved)"
+          style="text;html=1;align=left;fontSize=11;fillColor=#fff2cc;strokeColor=#d6b656;rounded=1;spacingLeft=8;"
+          vertex="1" parent="1">
+          <mxGeometry x="20" y="20" width="860" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <!-- INTERNET CLOUD                                     -->
+        <!-- ═══════════════════════════════════════════════════ -->
+        <mxCell id="internet" value="Internet" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1100" y="100" width="140" height="70" as="geometry"/>
+        </mxCell>
+
+        <!-- REMOTE USERS -->
+        <mxCell id="remote-user" value="Remote Users&#xa;Cisco AnyConnect Client&#xa;Laptop / PC"
+          style="shape=mxgraph.cisco.computers_and_peripherals.pc;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;fontStyle=1;labelPosition=center;verticalLabelPosition=bottom;verticalAlign=top;"
+          vertex="1" parent="1">
+          <mxGeometry x="1090" y="200" width="160" height="90" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="e-user-inet" value="SSL TCP 443&#xa;via Internet"
+          style="edgeStyle=orthogonalEdgeStyle;strokeColor=#6c8ebf;fontStyle=2;fontSize=9;"
+          edge="1" source="remote-user" target="internet" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <!-- MANUFACTURING PLANT SITE                          -->
+        <!-- ═══════════════════════════════════════════════════ -->
+        <mxCell id="plant-site" value="MANUFACTURING PLANT SITE"
+          style="swimlane;startSize=30;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=13;"
+          vertex="1" parent="1">
+          <mxGeometry x="20" y="110" width="560" height="340" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="plant-floor" value="Plant Floor&#xa;Devices / IoT"   style="rounded=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;" vertex="1" parent="plant-site"><mxGeometry x="20"  y="60"  width="145" height="60" as="geometry"/></mxCell>
+        <mxCell id="office-lan"  value="Office LAN&#xa;Workstations"      style="rounded=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;" vertex="1" parent="plant-site"><mxGeometry x="207" y="60"  width="145" height="60" as="geometry"/></mxCell>
+        <mxCell id="ot-scada"    value="OT / SCADA&#xa;Network"           style="rounded=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;" vertex="1" parent="plant-site"><mxGeometry x="393" y="60"  width="145" height="60" as="geometry"/></mxCell>
+
+        <mxCell id="plant-nexus" value="Cisco Nexus 9000&#xa;Plant Core Switch"
+          style="shape=mxgraph.cisco.switches.workgroup_switch;fillColor=#036897;strokeColor=#ffffff;fontColor=#ffffff;fontStyle=1;fontSize=10;labelPosition=center;verticalLabelPosition=bottom;verticalAlign=top;"
+          vertex="1" parent="plant-site"><mxGeometry x="215" y="165" width="120" height="60" as="geometry"/></mxCell>
+
+        <mxCell id="plant-asa" value="Cisco ASA 5515-X&#xa;Edge Firewall&#xa;IPSec P2P VPN GW Only&#xa;(NOT AnyConnect)"
+          style="shape=mxgraph.cisco.firewalls.firewall;fillColor=#ae4132;strokeColor=#ffffff;fontColor=#000000;fontStyle=1;fontSize=10;labelPosition=center;verticalLabelPosition=bottom;verticalAlign=top;"
+          vertex="1" parent="plant-site"><mxGeometry x="215" y="265" width="120" height="55" as="geometry"/></mxCell>
+
+        <mxCell id="e-floor-nexus"  style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="plant-floor"  target="plant-nexus" parent="plant-site"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e-office-nexus" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="office-lan"   target="plant-nexus" parent="plant-site"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e-ot-nexus"     style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="ot-scada"     target="plant-nexus" parent="plant-site"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e-nexus-asa"    style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="plant-nexus"  target="plant-asa"   parent="plant-site"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <!-- DATACENTER SITE                                    -->
+        <!-- ═══════════════════════════════════════════════════ -->
+        <mxCell id="dc-site" value="DATACENTER SITE"
+          style="swimlane;startSize=30;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=13;"
+          vertex="1" parent="1">
+          <mxGeometry x="20" y="530" width="1400" height="620" as="geometry"/>
+        </mxCell>
+
+        <!-- DC ASA 5545-X -->
+        <mxCell id="dc-asa" value="Cisco ASA 5545-X&#xa;[1] DC Perimeter Firewall&#xa;[2] IPSec P2P VPN Termination (from Plant)&#xa;[3] AnyConnect SSL VPN Server (from Internet)&#xa;[4] AD/LDAP Auth for AnyConnect users"
+          style="shape=mxgraph.cisco.firewalls.firewall;fillColor=#ae4132;strokeColor=#ffffff;fontColor=#000000;fontStyle=1;fontSize=10;labelPosition=center;verticalLabelPosition=bottom;verticalAlign=top;"
+          vertex="1" parent="dc-site">
+          <mxGeometry x="575" y="50" width="150" height="80" as="geometry"/>
+        </mxCell>
+
+        <!-- DC Nexus -->
+        <mxCell id="dc-nexus" value="Cisco Nexus 9000&#xa;DC Core Switch"
+          style="shape=mxgraph.cisco.switches.workgroup_switch;fillColor=#036897;strokeColor=#ffffff;fontColor=#ffffff;fontStyle=1;fontSize=10;labelPosition=center;verticalLabelPosition=bottom;verticalAlign=top;"
+          vertex="1" parent="dc-site">
+          <mxGeometry x="575" y="195" width="150" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="e-asa-nexus" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="dc-asa" target="dc-nexus" parent="dc-site"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+        <!-- IBM Power8 -->
+        <mxCell id="ibm-box" value="IBM Power8 Servers (Bare Metal)" style="swimlane;startSize=25;fillColor=#f0e6ff;strokeColor=#9673a6;fontSize=11;fontStyle=1;" vertex="1" parent="dc-site">
+          <mxGeometry x="20" y="305" width="250" height="250" as="geometry"/>
+        </mxCell>
+        <mxCell id="sap-app"   value="SAP Application Server"        style="rounded=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=10;" vertex="1" parent="ibm-box"><mxGeometry x="15" y="40"  width="220" height="45" as="geometry"/></mxCell>
+        <mxCell id="sap-db"    value="SAP Database (DB2 / HANA)"     style="rounded=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=10;" vertex="1" parent="ibm-box"><mxGeometry x="15" y="100" width="220" height="45" as="geometry"/></mxCell>
+        <mxCell id="ibm-idrac" value="iDRAC OOB Mgmt (Dedicated NIC)"style="rounded=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=9;fontStyle=2;" vertex="1" parent="ibm-box"><mxGeometry x="15" y="175" width="220" height="40" as="geometry"/></mxCell>
+
+        <!-- Dell R630 / ESXi -->
+        <mxCell id="dell-box" value="Dell R630 Cluster — VMware ESXi 7.x" style="swimlane;startSize=25;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;fontStyle=1;" vertex="1" parent="dc-site">
+          <mxGeometry x="320" y="305" width="680" height="285" as="geometry"/>
+        </mxCell>
+        <mxCell id="vcenter"     value="VM: VMware vCenter Server (Mgmt &amp; Orchestration)" style="rounded=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;fontStyle=1;" vertex="1" parent="dell-box"><mxGeometry x="15"  y="35"  width="320" height="40" as="geometry"/></mxCell>
+        <mxCell id="vm-exchange" value="VM: MS Exchange"             style="rounded=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" vertex="1" parent="dell-box"><mxGeometry x="345" y="35"  width="315" height="35" as="geometry"/></mxCell>
+        <mxCell id="vm-sql"      value="VM: MS SQL Server"           style="rounded=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" vertex="1" parent="dell-box"><mxGeometry x="345" y="80"  width="315" height="35" as="geometry"/></mxCell>
+        <mxCell id="vm-ad"       value="VM: Active Directory / DNS&#xa;(LDAP Auth Source for AnyConnect → ASA 5545-X queries here)" style="rounded=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;fontStyle=1;" vertex="1" parent="dell-box"><mxGeometry x="345" y="125" width="315" height="50" as="geometry"/></mxCell>
+        <mxCell id="vm-sp"       value="VM: MS SharePoint"           style="rounded=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;fontStyle=1;" vertex="1" parent="dell-box"><mxGeometry x="15"  y="90"  width="320" height="38" as="geometry"/></mxCell>
+        <mxCell id="vm-rfq"      value="Custom RFQ/Quotation System (on SharePoint)" style="rounded=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;fontStyle=2;" vertex="1" parent="dell-box"><mxGeometry x="15"  y="138" width="320" height="38" as="geometry"/></mxCell>
+        <mxCell id="vm-file"     value="VM: File Server"             style="rounded=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" vertex="1" parent="dell-box"><mxGeometry x="15"  y="195" width="155" height="35" as="geometry"/></mxCell>
+        <mxCell id="vm-print"    value="VM: Print Server"            style="rounded=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" vertex="1" parent="dell-box"><mxGeometry x="180" y="195" width="155" height="35" as="geometry"/></mxCell>
+        <mxCell id="vm-other"    value="VM: Other MS Apps"           style="rounded=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" vertex="1" parent="dell-box"><mxGeometry x="345" y="195" width="155" height="35" as="geometry"/></mxCell>
+        <mxCell id="dell-idrac"  value="iDRAC OOB per Host (Dedicated NIC)" style="rounded=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=9;fontStyle=2;" vertex="1" parent="dell-box"><mxGeometry x="505" y="195" width="155" height="35" as="geometry"/></mxCell>
+        <mxCell id="e-sp-rfq"    style="edgeStyle=orthogonalEdgeStyle;strokeColor=#d6b656;" edge="1" source="vm-sp" target="vm-rfq" parent="dell-box"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+        <!-- SAN -->
+        <mxCell id="san-box" value="SAN Storage (FC / iSCSI)" style="swimlane;startSize=25;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;fontStyle=1;" vertex="1" parent="dc-site">
+          <mxGeometry x="1060" y="305" width="240" height="180" as="geometry"/>
+        </mxCell>
+        <mxCell id="san-vmfs"   value="VMware VMFS Datastores"   style="rounded=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;" vertex="1" parent="san-box"><mxGeometry x="15" y="40" width="210" height="40" as="geometry"/></mxCell>
+        <mxCell id="san-nakivo" value="Nakivo Backup Repository"  style="rounded=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;" vertex="1" parent="san-box"><mxGeometry x="15" y="95" width="210" height="40" as="geometry"/></mxCell>
+
+        <!-- Nakivo -->
+        <mxCell id="nakivo-box" value="Nakivo Backup &amp; Replication&#xa;• VM Backups  • ESXi Host Backup  • Replication"
+          style="rounded=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;fontStyle=1;"
+          vertex="1" parent="dc-site">
+          <mxGeometry x="1060" y="505" width="240" height="75" as="geometry"/>
+        </mxCell>
+
+        <!-- OOB -->
+        <mxCell id="oob-net" value="Out-of-Band Management Network (Dedicated VLAN)&#xa;[ IBM Power8 iDRAC ]  ──  [ Dell R630 iDRAC x N ]  ──  [ Jump Host / Bastion ]"
+          style="rounded=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=10;fontStyle=1;"
+          vertex="1" parent="dc-site">
+          <mxGeometry x="20" y="580" width="850" height="55" as="geometry"/>
+        </mxCell>
+
+        <!-- DC wiring -->
+        <mxCell id="e-nexus-ibm"   style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="dc-nexus" target="ibm-box"    parent="dc-site"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e-nexus-dell"  style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="dc-nexus" target="dell-box"   parent="dc-site"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e-nexus-san"   style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="dc-nexus" target="san-box"    parent="dc-site"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e-dell-san"    style="edgeStyle=orthogonalEdgeStyle;dashed=1;" edge="1" source="dell-box" target="san-box" parent="dc-site"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e-nakivo-san"  style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="nakivo-box" target="san-nakivo" parent="dc-site"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e-ibm-oob"     style="edgeStyle=orthogonalEdgeStyle;strokeColor=#d79b00;dashed=1;" edge="1" source="ibm-idrac"  target="oob-net" parent="dc-site"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e-dell-oob"    style="edgeStyle=orthogonalEdgeStyle;strokeColor=#d79b00;dashed=1;" edge="1" source="dell-idrac" target="oob-net" parent="dc-site"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+        <!-- LDAP auth arrow: ASA -> AD -->
+        <mxCell id="e-asa-ad" value="LDAP/LDAPS Auth" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#d6b656;strokeWidth=2;dashed=1;fontStyle=3;fontSize=9;endArrow=block;" edge="1" source="dc-asa" target="vm-ad" parent="dc-site">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <!-- PATH 1: IPSec P2P (Plant ASA -> DC ASA)           -->
+        <!-- ═══════════════════════════════════════════════════ -->
+        <mxCell id="e-p2p-vpn" value="PATH 1: IPSec P2P VPN (Site-to-Site)"
+          style="edgeStyle=orthogonalEdgeStyle;strokeWidth=3;strokeColor=#b85450;dashed=1;endArrow=block;startArrow=block;fontStyle=1;fontSize=10;"
+          edge="1" source="plant-asa" target="dc-asa" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="315" y="500"/>
+              <mxPoint x="650" y="500"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <!-- PATH 2: AnyConnect (Internet -> DC ASA directly)  -->
+        <!-- ═══════════════════════════════════════════════════ -->
+        <mxCell id="e-anyconnect" value="PATH 2: AnyConnect SSL VPN (TCP 443)&#xa;Remote users → Internet → DC ASA 5545-X DIRECTLY&#xa;Plant site is NOT in this path"
+          style="edgeStyle=orthogonalEdgeStyle;strokeWidth=3;strokeColor=#0066cc;dashed=1;endArrow=block;fontStyle=1;fontSize=9;"
+          edge="1" source="internet" target="dc-asa" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1170" y="520"/>
+              <mxPoint x="650"  y="520"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

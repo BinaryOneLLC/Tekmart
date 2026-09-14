@@ -1,0 +1,243 @@
+================================================================================
+  MANUFACTURING PLANT - NETWORK TOPOLOGY DOCUMENT
+  IPSec P2P VPN | Cisco AnyConnect | MS AD/LDAP Auth | Nexus 9000
+  Cisco ASA 5515-X / 5545-X | VMware ESXi 7.x | IBM Power8 | Dell R630
+================================================================================
+
+
+================================================================================
+  TOPOLOGY DIAGRAM
+================================================================================
+
+  NOTE ON TWO SEPARATE VPN PATHS:
+  -----------------------------------------------------------------------
+  PATH 1 - SITE-TO-SITE:  Plant users/systems  -->  Plant ASA 5515-X
+                           -->  IPSec P2P Tunnel  -->  DC ASA 5545-X
+
+  PATH 2 - REMOTE ACCESS:  Remote users (AnyConnect client)
+                           -->  Internet  -->  DC ASA 5545-X  DIRECTLY
+                           (The manufacturing plant is NOT involved)
+  -----------------------------------------------------------------------
+
+
+  REMOTE USERS (AnyConnect)                   MANUFACTURING PLANT SITE
+  ==============================              ===================================
+
+  +----------------------------+             +-------------------------------+
+  |  Remote Users / Roaming    |             |  Plant Floor / Devices / IoT  |
+  |  (Cisco AnyConnect Client) |             +---------------+---------------+
+  |  Laptop / PC               |             |  Office LAN / Workstations    |
+  +------------+---------------+             +---------------+---------------+
+               |                             |  OT / SCADA Network           |
+               |  SSL/TLS TCP 443            +---------------+---------------+
+               |  via Internet                               |
+               |                             +--------------+----------------+
+               |                             | Cisco Nexus 9000              |
+               |                             | Plant Core Switch             |
+               |                             +--------------+----------------+
+               |                                            |
+               |                             +--------------+----------------+
+               |                             | Cisco ASA 5515-X              |
+               |                             | Edge Firewall                 |
+               |                             | IPSec P2P VPN Gateway         |
+               |                             +--------------+----------------+
+               |                                            |
+               |                                           IPSec P2P
+               |                                           Encrypted Tunnel
+               |                                            |
+               +----------------------------+               |
+                              |             |               |
+                              v             v               v
+  ============================================================================
+                              DATACENTER SITE
+  ============================================================================
+
+                    +--------------------------------------------------+
+                    |              Cisco ASA 5545-X                    |
+                    |  ------------------------------------------------ |
+                    |  [1] DC Perimeter Firewall                        |
+                    |  [2] IPSec P2P VPN Termination  <-- from Plant   |
+                    |  [3] Cisco AnyConnect SSL VPN Server <-- Remote  |
+                    |      Authentication: MS Active Directory (LDAP)  |
+                    +------------------------------+-------------------+
+                                                   |
+                    +------------------------------+-------------------+
+                    |         Cisco Nexus 9000  -  DC Core Switch      |
+                    +----------+------------------+------------------+-+
+                               |                  |                  |
+        +----------------------+--+  +------------+----------+  +---+------------------+
+        |  IBM Power8 Servers      |  |  Dell R630 Cluster     |  |  SAN Storage         |
+        |  (Standalone / Bare      |  |  VMware ESXi 7.x       |  |  (FC / iSCSI)        |
+        |   Metal)                 |  |                        |  |                      |
+        |                         |  |  +--------------------+ |  |  +-----------------+ |
+        |  +-----------------+    |  |  | VM: vCenter Server | |  |  | VMFS Datastores | |
+        |  | SAP App Server   |    |  |  +--------------------+ |  |  +-----------------+ |
+        |  +-----------------+    |  |  | VM: MS Exchange    | |  |  | Nakivo Backup   | |
+        |  | SAP Database     |    |  |  +--------------------+ |  |  | Repository      | |
+        |  | (DB2 / HANA)     |    |  |  | VM: MS SQL Server  | |  |  +-----------------+ |
+        |  +-----------------+    |  |  +--------------------+ |  +----------------------+
+        |                         |  |  | VM: Active Dir/DNS | |
+        |  +-----------------+    |  |  | (LDAP Auth Source) |<-------- ASA 5545-X queries
+        |  | iDRAC OOB Mgmt  |    |  |  +--------------------+ |        AD here to validate
+        |  | (Dedicated NIC)  |    |  |  | VM: MS SharePoint  | |        AnyConnect users
+        |  +-----------------+    |  |  | +----------------+  | |
+        +-------------------------+  |  | | RFQ / Quotation|  | |  +----------------------+
+                                     |  | | System (Custom)|  | |  | Nakivo Backup &      |
+                                     |  | +----------------+  | |  | Replication          |
+                                     |  +--------------------+ |  | * VM Backups          |
+                                     |  | VM: File Server    | |  | * ESXi Host Backup    |
+                                     |  +--------------------+ |  | * Replication Jobs    |
+                                     |  | VM: Print Server   | |  +----------------------+
+                                     |  +--------------------+ |
+                                     |  | VM: Other MS Apps  | |
+                                     |  +--------------------+ |
+                                     |  | iDRAC OOB per Host | |
+                                     |  | (Dedicated NIC)    | |
+                                     |  +--------------------+ |
+                                     +------------------------+
+
+  +------------------------------------------------------------------------+
+  |       Out-of-Band Management Network  (Dedicated VLAN / Isolated)       |
+  |  [ IBM Power8 iDRAC ]  --  [ Dell R630 iDRAC x N ]  --  [ Jump Host ]  |
+  +------------------------------------------------------------------------+
+
+
+================================================================================
+  CISCO ANYCONNECT REMOTE ACCESS VPN - AUTHENTICATION FLOW
+================================================================================
+
+  AnyConnect connects DIRECTLY to the DATACENTER (DC ASA 5545-X).
+  It does NOT route through the Manufacturing Plant.
+
+  1.  Remote user launches Cisco AnyConnect VPN Client on their laptop/PC.
+
+  2.  Client connects to the Cisco ASA 5545-X public IP address on TCP 443
+      (SSL/TLS) directly over the internet.
+      ** The Manufacturing Plant ASA 5515-X is NOT involved. **
+
+  3.  The ASA 5545-X presents its SSL certificate and challenges the user
+      for credentials (username / password).
+
+  4.  The ASA 5545-X forwards the credentials to VM: Active Directory / DNS
+      via LDAP (port 389) or LDAPS (port 636) for authentication.
+
+  5.  Active Directory validates the credentials and returns success or
+      failure to the ASA.
+
+  6.  On successful authentication, the ASA 5545-X establishes the AnyConnect
+      SSL VPN tunnel and assigns the user an IP address from the remote-access
+      pool.
+
+  7.  The user's traffic is routed through the tunnel into the datacenter,
+      subject to ASA access-control policies and group policies assigned
+      based on the user's AD group membership.
+
+  8.  Split-tunneling policy (if configured) determines which traffic goes
+      through the VPN versus direct internet breakout.
+
+  SECURITY NOTE:
+  It is strongly recommended to enforce Multi-Factor Authentication (MFA)
+  on AnyConnect logins using Cisco DUO or Microsoft Authenticator integrated
+  with AD/RADIUS.  The AD service account used by the ASA for LDAP queries
+  should be a read-only account with the minimum permissions required.
+
+
+================================================================================
+  COMPONENT SUMMARY
+================================================================================
+
+  LAYER                    COMPONENT                       DETAILS
+  -----------------------------------------------------------------------
+  Remote Access            Cisco AnyConnect VPN Client     Installed on remote laptops/PCs.
+                                                           Connects DIRECTLY to DC ASA 5545-X
+                                                           on TCP 443 (SSL) via the internet.
+                                                           Does NOT go through the plant.
+
+  Remote Auth              MS Active Directory / LDAP      ASA 5545-X authenticates AnyConnect
+                                                           users via LDAP/LDAPS to the AD VM
+                                                           in the datacenter. Group policy
+                                                           applied per AD group membership.
+
+  Plant Core Switch        Cisco Nexus 9000                Layer 3 core switching. VLANs for
+                                                           OT, Office, and Plant Floor.
+
+  Plant Edge Firewall      Cisco ASA 5515-X                Stateful firewall. IPSec P2P VPN
+                                                           gateway to datacenter only.
+                                                           NOT involved in AnyConnect.
+
+  WAN / VPN (Site-Site)    IPSec Point-to-Point Tunnel     Encrypted tunnel between plant and
+                                                           datacenter only:
+                                                           ASA 5515-X (Plant) <-> ASA 5545-X (DC).
+
+  DC Edge / VPN Server     Cisco ASA 5545-X                (1) Terminates IPSec P2P from plant.
+                                                           (2) Serves as AnyConnect SSL VPN
+                                                               server for remote users.
+                                                           (3) Queries AD for LDAP auth.
+                                                           (4) DC perimeter stateful firewall.
+
+  DC Core Switch           Cisco Nexus 9000                High-speed DC fabric. Connects all
+                                                           server tiers and SAN.
+
+  SAP Tier                 IBM Power8 (Bare Metal)         SAP Application Server +
+                                                           SAP Database (DB2 / HANA).
+
+  Virtualization Mgmt      VMware vCenter Server (VM)      Centralized ESXi host management,
+                                                           HA/DRS orchestration.
+
+  MS Applications          Dell R630 + VMware ESXi 7.x    Exchange, SQL Server, Active
+                                                           Directory/DNS (LDAP for AnyConnect),
+                                                           SharePoint, File Server, Print Server.
+
+  Business App             Custom RFQ/Quotation System     Built on MS SharePoint. Manages
+                                                           RFQ and quotation workflows.
+
+  Storage                  SAN (FC / iSCSI)                VMware VMFS datastores +
+                                                           Nakivo backup repository.
+
+  Backup                   Nakivo Backup & Replication     VM backups, ESXi host-level backup,
+                                                           replication jobs.
+
+  OOB Management           iDRAC per Server                Dedicated OOB NIC per IBM Power8
+                           (Dedicated NIC)                 and Dell R630. Isolated VLAN.
+                                                           Access via jump host only.
+
+
+================================================================================
+  NETWORK SEGMENTATION NOTES
+================================================================================
+
+  VPN PATHS - IMPORTANT DISTINCTION:
+    - Site-to-Site (Plant <-> DC):  Handled by ASA 5515-X <-> ASA 5545-X
+                                    using IPSec P2P tunnel.
+    - Remote Access (Users -> DC):  Handled by AnyConnect client connecting
+                                    DIRECTLY to ASA 5545-X over the internet.
+                                    The plant site is NOT in this path.
+
+  - Plant site uses separate VLANs for: OT/SCADA, Office LAN, Plant Floor.
+    All inter-VLAN traffic is controlled by the Cisco ASA 5515-X.
+
+  - The IPSec P2P tunnel carries only plant-to-datacenter traffic.
+    QoS is recommended to prioritize SAP RFC/DIAG traffic.
+
+  - The Out-of-Band Management VLAN is fully isolated from production
+    traffic. Only the jump host / bastion has access to iDRAC interfaces.
+
+  - Nakivo backup jobs should be scheduled during off-peak hours to
+    minimize SAN I/O and network impact.
+
+
+================================================================================
+  DOCUMENT INFORMATION
+================================================================================
+
+  Document Title  : Manufacturing Plant - Network Topology
+  Version         : 1.4
+  Date            : 2026-08-27
+  Repository      : BinaryOneLLC/CeramicArts
+  File Location   : docs/Manufacturing_Plant_Topology.txt
+
+  Related Files:
+    docs/Manufacturing_Plant_Topology.docx   (Microsoft Word version)
+    docs/Manufacturing_Plant_Topology.drawio (draw.io diagram)
+
+================================================================================
