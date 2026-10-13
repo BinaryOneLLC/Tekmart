@@ -1,0 +1,316 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1100" width="100%" height="100%" style="background-color: #0d1117; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0d1117" />
+      <stop offset="100%" stop-color="#161b22" />
+    </linearGradient>
+    
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#21262d" />
+      <stop offset="100%" stop-color="#161b22" />
+    </linearGradient>
+
+    <linearGradient id="wanGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#d97706" />
+    </linearGradient>
+
+    <linearGradient id="fwGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ef4444" />
+      <stop offset="100%" stop-color="#b91c1c" />
+    </linearGradient>
+
+    <linearGradient id="sw10gGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#3b82f6" />
+      <stop offset="100%" stop-color="#1d4ed8" />
+    </linearGradient>
+
+    <linearGradient id="sw1gGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#10b981" />
+      <stop offset="100%" stop-color="#047857" />
+    </linearGradient>
+
+    <linearGradient id="serverGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#6366f1" />
+      <stop offset="100%" stop-color="#4338ca" />
+    </linearGradient>
+
+    <linearGradient id="storageGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#a855f7" />
+      <stop offset="100%" stop-color="#7e22ce" />
+    </linearGradient>
+
+    <!-- Filters for glow effects -->
+    <filter id="dropShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.6"/>
+    </filter>
+
+    <!-- Markers for arrows -->
+    <marker id="arrowWan" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M 0 0 L 8 4 L 0 8 Z" fill="#f59e0b" />
+    </marker>
+    <marker id="arrow10G" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M 0 0 L 8 4 L 0 8 Z" fill="#38bdf8" />
+    </marker>
+    <marker id="arrowFC" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M 0 0 L 8 4 L 0 8 Z" fill="#c084fc" />
+    </marker>
+    <marker id="arrowMgmt" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M 0 0 L 8 4 L 0 8 Z" fill="#34d399" />
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="1100" fill="url(#bgGrad)"/>
+  
+  <!-- Subtle Grid lines -->
+  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#30363d" stroke-width="0.5" stroke-opacity="0.3"/>
+  </pattern>
+  <rect width="1200" height="1100" fill="url(#grid)" />
+
+  <!-- HEADER -->
+  <g transform="translate(50, 40)">
+    <text x="0" y="0" fill="#f0f6fc" font-size="24" font-weight="700" letter-spacing="0.5">DATACENTER NETWORK &amp; HARDWARE TOPOLOGY</text>
+    <text x="0" y="24" fill="#8b949e" font-size="13">Infrastructure Architecture: Cisco, Netgear, Dell PowerEdge, Dell PowerVault MD3800f SAN</text>
+  </g>
+
+  <!-- LEGEND -->
+  <g transform="translate(680, 25)">
+    <rect x="0" y="0" width="470" height="50" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+    
+    <line x1="20" y1="25" x2="50" y2="25" stroke="#f59e0b" stroke-width="3"/>
+    <text x="56" y="29" fill="#c9d1d9" font-size="11">WAN / Internet</text>
+    
+    <line x1="145" y1="25" x2="175" y2="25" stroke="#38bdf8" stroke-width="3"/>
+    <text x="181" y="29" fill="#c9d1d9" font-size="11">10GbE Data</text>
+
+    <line x1="255" y1="25" x2="285" y2="25" stroke="#c084fc" stroke-width="3"/>
+    <text x="291" y="29" fill="#c9d1d9" font-size="11">16Gb FC SAN</text>
+
+    <line x1="370" y1="25" x2="400" y2="25" stroke="#34d399" stroke-width="2" stroke-dasharray="4,3"/>
+    <text x="406" y="29" fill="#c9d1d9" font-size="11">1GbE OOB/iDRAC</text>
+  </g>
+
+  <!-- ==================== ZONE 1: WAN & EDGE ==================== -->
+  <g transform="translate(50, 95)">
+    <!-- Zone background box -->
+    <rect x="0" y="0" width="1100" height="145" rx="12" fill="#161b22" fill-opacity="0.6" stroke="#f59e0b" stroke-opacity="0.3" stroke-width="1"/>
+    <text x="20" y="25" fill="#f59e0b" font-size="12" font-weight="700" letter-spacing="1">ZONE 1: WAN &amp; PERIMETER EDGE</text>
+
+    <!-- ISP 1 -->
+    <g transform="translate(50, 45)">
+      <rect width="150" height="65" rx="8" fill="url(#cardGrad)" stroke="#30363d" stroke-width="1.5" filter="url(#dropShadow)"/>
+      <rect width="150" height="4" rx="2" fill="#f59e0b"/>
+      <text x="75" y="28" fill="#f0f6fc" font-size="13" font-weight="600" text-anchor="middle">ISP 1 (Primary)</text>
+      <text x="75" y="48" fill="#8b949e" font-size="11" text-anchor="middle">Dedicated Fiber</text>
+    </g>
+
+    <!-- ISP 2 -->
+    <g transform="translate(240, 45)">
+      <rect width="150" height="65" rx="8" fill="url(#cardGrad)" stroke="#30363d" stroke-width="1.5" filter="url(#dropShadow)"/>
+      <rect width="150" height="4" rx="2" fill="#f59e0b"/>
+      <text x="75" y="28" fill="#f0f6fc" font-size="13" font-weight="600" text-anchor="middle">ISP 2 (Secondary)</text>
+      <text x="75" y="48" fill="#8b949e" font-size="11" text-anchor="middle">Redundant Carrier</text>
+    </g>
+
+    <!-- Cisco 3560G -->
+    <g transform="translate(460, 45)">
+      <rect width="250" height="65" rx="8" fill="url(#cardGrad)" stroke="#f59e0b" stroke-width="1.5" filter="url(#dropShadow)"/>
+      <rect width="250" height="4" rx="2" fill="url(#wanGrad)"/>
+      <text x="125" y="26" fill="#f0f6fc" font-size="13" font-weight="700" text-anchor="middle">Cisco Catalyst 3560G</text>
+      <text x="125" y="44" fill="#fbbf24" font-size="11" font-weight="500" text-anchor="middle">WAN &amp; Edge L3 Switch</text>
+      <text x="125" y="58" fill="#8b949e" font-size="10" text-anchor="middle">24x 1GbE Copper + 4x SFP</text>
+    </g>
+
+    <!-- Cisco ASA 5545-X -->
+    <g transform="translate(780, 45)">
+      <rect width="270" height="65" rx="8" fill="url(#cardGrad)" stroke="#ef4444" stroke-width="1.5" filter="url(#dropShadow)"/>
+      <rect width="270" height="4" rx="2" fill="url(#fwGrad)"/>
+      <text x="135" y="26" fill="#f0f6fc" font-size="13" font-weight="700" text-anchor="middle">Cisco ASA 5545-X</text>
+      <text x="135" y="44" fill="#f87171" font-size="11" font-weight="500" text-anchor="middle">Next-Gen Perimeter Firewall</text>
+      <text x="135" y="58" fill="#8b949e" font-size="10" text-anchor="middle">Stateful Inspection | VPN Gateway</text>
+    </g>
+
+    <!-- Lines in Zone 1 -->
+    <line x1="200" y1="77" x2="460" y2="77" stroke="#f59e0b" stroke-width="2" stroke-dasharray="3,3"/>
+    <line x1="390" y1="77" x2="460" y2="77" stroke="#f59e0b" stroke-width="2" stroke-dasharray="3,3"/>
+    <line x1="710" y1="77" x2="780" y2="77" stroke="#f59e0b" stroke-width="3"/>
+    <text x="745" y="70" fill="#fbbf24" font-size="9" text-anchor="middle">Gi0/0 Outside</text>
+  </g>
+
+  <!-- ==================== ZONE 2: CORE & DISTRIBUTION ==================== -->
+  <g transform="translate(50, 265)">
+    <rect x="0" y="0" width="1100" height="150" rx="12" fill="#161b22" fill-opacity="0.6" stroke="#3b82f6" stroke-opacity="0.3" stroke-width="1"/>
+    <text x="20" y="25" fill="#38bdf8" font-size="12" font-weight="700" letter-spacing="1">ZONE 2: CORE &amp; DISTRIBUTION SWITCHING FABRIC</text>
+
+    <!-- Netgear XS712T -->
+    <g transform="translate(100, 45)">
+      <rect width="400" height="75" rx="8" fill="url(#cardGrad)" stroke="#38bdf8" stroke-width="1.5" filter="url(#dropShadow)"/>
+      <rect width="400" height="5" rx="2" fill="url(#sw10gGrad)"/>
+      <text x="200" y="28" fill="#f0f6fc" font-size="14" font-weight="700" text-anchor="middle">Netgear XS712T (10GbE Switch)</text>
+      <text x="200" y="46" fill="#38bdf8" font-size="11" font-weight="600" text-anchor="middle">High-Speed LAN &amp; Virtualization Fabric</text>
+      <text x="200" y="64" fill="#8b949e" font-size="10" text-anchor="middle">12x 10GBase-T Copper + 2x Combo 10G SFP+ | Jumbo Frames (MTU 9000)</text>
+    </g>
+
+    <!-- Cisco Nexus 3048 -->
+    <g transform="translate(600, 45)">
+      <rect width="400" height="75" rx="8" fill="url(#cardGrad)" stroke="#10b981" stroke-width="1.5" filter="url(#dropShadow)"/>
+      <rect width="400" height="5" rx="2" fill="url(#sw1gGrad)"/>
+      <text x="200" y="28" fill="#f0f6fc" font-size="14" font-weight="700" text-anchor="middle">Cisco Nexus 3048 (1GbE / 10GbE Switch)</text>
+      <text x="200" y="46" fill="#34d399" font-size="11" font-weight="600" text-anchor="middle">1GbE Access &amp; Out-of-Band (OOB) Management</text>
+      <text x="200" y="64" fill="#8b949e" font-size="10" text-anchor="middle">48x 1GbE Base-T + 4x 10G SFP+ Uplinks | Line-rate L2/L3</text>
+    </g>
+
+    <!-- Inter-Switch Link between XS712T and N3048 -->
+    <line x1="500" y1="82" x2="600" y2="82" stroke="#38bdf8" stroke-width="3"/>
+    <text x="550" y="74" fill="#38bdf8" font-size="9" text-anchor="middle" font-weight="600">10G SFP+ Trunk</text>
+  </g>
+
+  <!-- Connectors from ASA to Zone 2 -->
+  <!-- ASA Gi0/1 (Inside) to Netgear XS712T -->
+  <path d="M 870 205 L 870 235 L 300 235 L 300 310" fill="none" stroke="#38bdf8" stroke-width="2.5"/>
+  <rect x="530" y="225" width="130" height="18" rx="4" fill="#161b22" stroke="#38bdf8" stroke-width="1"/>
+  <text x="595" y="238" fill="#38bdf8" font-size="10" text-anchor="middle">Gi0/1 Inside Trunk</text>
+
+  <!-- ASA Gi0/2 (DMZ) to Nexus 3048 -->
+  <path d="M 960 205 L 960 250 L 800 250 L 800 310" fill="none" stroke="#10b981" stroke-width="2" stroke-dasharray="4,3"/>
+  <rect x="850" y="240" width="120" height="18" rx="4" fill="#161b22" stroke="#10b981" stroke-width="1"/>
+  <text x="910" y="253" fill="#34d399" font-size="10" text-anchor="middle">Gi0/2 DMZ / Mgmt</text>
+
+  <!-- ==================== ZONE 3: COMPUTE SERVERS ==================== -->
+  <g transform="translate(50, 465)">
+    <rect x="0" y="0" width="1100" height="235" rx="12" fill="#161b22" fill-opacity="0.6" stroke="#6366f1" stroke-opacity="0.3" stroke-width="1"/>
+    <text x="20" y="25" fill="#818cf8" font-size="12" font-weight="700" letter-spacing="1">ZONE 3: COMPUTE CLUSTER (DELL POWEREDGE)</text>
+
+    <!-- Dell R450 -->
+    <g transform="translate(40, 45)">
+      <rect width="310" height="160" rx="8" fill="url(#cardGrad)" stroke="#6366f1" stroke-width="1.5" filter="url(#dropShadow)"/>
+      <rect width="310" height="4" rx="2" fill="url(#serverGrad)"/>
+      <text x="155" y="28" fill="#f0f6fc" font-size="14" font-weight="700" text-anchor="middle">Dell PowerEdge R450</text>
+      <text x="155" y="46" fill="#a5b4fc" font-size="11" text-anchor="middle">Dual Intel Xeon Scalable (1U)</text>
+      
+      <!-- Ports box -->
+      <rect x="15" y="60" width="280" height="85" rx="6" fill="#0d1117" stroke="#30363d" stroke-width="1"/>
+      <text x="25" y="78" fill="#38bdf8" font-size="11" font-weight="600">Dual 10GbE NICs:</text>
+      <text x="140" y="78" fill="#c9d1d9" font-size="10">LACP Bond0 (VM &amp; vMotion)</text>
+      
+      <text x="25" y="103" fill="#c084fc" font-size="11" font-weight="600">Dual 16Gb FC HBA:</text>
+      <text x="140" y="103" fill="#c9d1d9" font-size="10">Dual-path MPIO to SAN</text>
+      
+      <text x="25" y="128" fill="#34d399" font-size="11" font-weight="600">1GbE iDRAC9 Port:</text>
+      <text x="140" y="128" fill="#c9d1d9" font-size="10">OOB Remote Management</text>
+    </g>
+
+    <!-- Dell R640 -->
+    <g transform="translate(395, 45)">
+      <rect width="310" height="160" rx="8" fill="url(#cardGrad)" stroke="#6366f1" stroke-width="1.5" filter="url(#dropShadow)"/>
+      <rect width="310" height="4" rx="2" fill="url(#serverGrad)"/>
+      <text x="155" y="28" fill="#f0f6fc" font-size="14" font-weight="700" text-anchor="middle">Dell PowerEdge R640</text>
+      <text x="155" y="46" fill="#a5b4fc" font-size="11" text-anchor="middle">High-Density Compute Node (1U)</text>
+      
+      <rect x="15" y="60" width="280" height="85" rx="6" fill="#0d1117" stroke="#30363d" stroke-width="1"/>
+      <text x="25" y="78" fill="#38bdf8" font-size="11" font-weight="600">Dual 10GbE NICs:</text>
+      <text x="140" y="78" fill="#c9d1d9" font-size="10">LACP Bond0 (VM &amp; vMotion)</text>
+      
+      <text x="25" y="103" fill="#c084fc" font-size="11" font-weight="600">Dual 16Gb FC HBA:</text>
+      <text x="140" y="103" fill="#c9d1d9" font-size="10">Dual-path MPIO to SAN</text>
+      
+      <text x="25" y="128" fill="#34d399" font-size="11" font-weight="600">1GbE iDRAC9 Port:</text>
+      <text x="140" y="128" fill="#c9d1d9" font-size="10">OOB Remote Management</text>
+    </g>
+
+    <!-- Dell R720xd -->
+    <g transform="translate(750, 45)">
+      <rect width="310" height="160" rx="8" fill="url(#cardGrad)" stroke="#6366f1" stroke-width="1.5" filter="url(#dropShadow)"/>
+      <rect width="310" height="4" rx="2" fill="url(#serverGrad)"/>
+      <text x="155" y="28" fill="#f0f6fc" font-size="14" font-weight="700" text-anchor="middle">Dell PowerEdge R720xd</text>
+      <text x="155" y="46" fill="#a5b4fc" font-size="11" text-anchor="middle">High-Capacity Storage/Compute (2U)</text>
+      
+      <rect x="15" y="60" width="280" height="85" rx="6" fill="#0d1117" stroke="#30363d" stroke-width="1"/>
+      <text x="25" y="78" fill="#38bdf8" font-size="11" font-weight="600">Dual 10GbE NICs:</text>
+      <text x="140" y="78" fill="#c9d1d9" font-size="10">LACP Bond0 (VM &amp; vMotion)</text>
+      
+      <text x="25" y="103" fill="#c084fc" font-size="11" font-weight="600">Dual 16Gb FC HBA:</text>
+      <text x="140" y="103" fill="#c9d1d9" font-size="10">Dual-path MPIO to SAN</text>
+      
+      <text x="25" y="128" fill="#34d399" font-size="11" font-weight="600">1GbE iDRAC7 Port:</text>
+      <text x="140" y="128" fill="#c9d1d9" font-size="10">OOB Remote Management</text>
+    </g>
+  </g>
+
+  <!-- Connectors from Netgear XS712T (Zone 2) down to Servers (Zone 3) -->
+  <path d="M 250 385 L 250 510" fill="none" stroke="#38bdf8" stroke-width="3"/>
+  <path d="M 320 385 L 320 425 L 550 425 L 550 510" fill="none" stroke="#38bdf8" stroke-width="3"/>
+  <path d="M 370 385 L 370 415 L 905 415 L 905 510" fill="none" stroke="#38bdf8" stroke-width="3"/>
+
+  <!-- Connectors from Nexus 3048 (Zone 2) down to Servers (iDRAC OOB) -->
+  <path d="M 720 385 L 720 440 L 290 440 L 290 510" fill="none" stroke="#34d399" stroke-width="2" stroke-dasharray="4,3"/>
+  <path d="M 780 385 L 780 450 L 610 450 L 610 510" fill="none" stroke="#34d399" stroke-width="2" stroke-dasharray="4,3"/>
+  <path d="M 850 385 L 850 435 L 970 435 L 970 510" fill="none" stroke="#34d399" stroke-width="2" stroke-dasharray="4,3"/>
+
+  <!-- ==================== ZONE 4: SAN STORAGE ==================== -->
+  <g transform="translate(50, 755)">
+    <rect x="0" y="0" width="1100" height="280" rx="12" fill="#161b22" fill-opacity="0.6" stroke="#a855f7" stroke-opacity="0.3" stroke-width="1"/>
+    <text x="20" y="25" fill="#c084fc" font-size="12" font-weight="700" letter-spacing="1">ZONE 4: SAN BLOCK STORAGE (DELL POWERVAULT MD3800f)</text>
+
+    <!-- Storage Array Main Chassis Box -->
+    <g transform="translate(150, 45)">
+      <rect width="800" height="205" rx="10" fill="url(#cardGrad)" stroke="#a855f7" stroke-width="2" filter="url(#dropShadow)"/>
+      <rect width="800" height="5" rx="2" fill="url(#storageGrad)"/>
+      <text x="400" y="30" fill="#f0f6fc" font-size="16" font-weight="700" text-anchor="middle">Dell PowerVault MD3800f Storage Array</text>
+      <text x="400" y="50" fill="#d8b4fe" font-size="12" text-anchor="middle">Dual RAID Controllers | High-Density 24-Bay SAS/SSD Enclosure</text>
+
+      <!-- Controller 0 (Fabric A) -->
+      <g transform="translate(30, 70)">
+        <rect width="350" height="110" rx="6" fill="#0d1117" stroke="#9333ea" stroke-width="1.5"/>
+        <text x="175" y="24" fill="#f0f6fc" font-size="12" font-weight="700" text-anchor="middle">RAID Controller 0 (Fabric A)</text>
+        <line x1="20" y1="35" x2="330" y2="35" stroke="#30363d" stroke-width="1"/>
+        <text x="30" y="55" fill="#c084fc" font-size="11" font-weight="600">FC Port 0: </text><text x="95" y="55" fill="#8b949e" font-size="10">Target to R450 HBA 1 (16Gb)</text>
+        <text x="30" y="75" fill="#c084fc" font-size="11" font-weight="600">FC Port 1: </text><text x="95" y="75" fill="#8b949e" font-size="10">Target to R640 HBA 1 (16Gb)</text>
+        <text x="30" y="95" fill="#c084fc" font-size="11" font-weight="600">FC Port 2: </text><text x="95" y="95" fill="#8b949e" font-size="10">Target to R720xd HBA 1 (16Gb)</text>
+      </g>
+
+      <!-- Controller 1 (Fabric B) -->
+      <g transform="translate(420, 70)">
+        <rect width="350" height="110" rx="6" fill="#0d1117" stroke="#9333ea" stroke-width="1.5"/>
+        <text x="175" y="24" fill="#f0f6fc" font-size="12" font-weight="700" text-anchor="middle">RAID Controller 1 (Fabric B - Redundant)</text>
+        <line x1="20" y1="35" x2="330" y2="35" stroke="#30363d" stroke-width="1"/>
+        <text x="30" y="55" fill="#c084fc" font-size="11" font-weight="600">FC Port 0: </text><text x="95" y="55" fill="#8b949e" font-size="10">Target to R450 HBA 2 (16Gb)</text>
+        <text x="30" y="75" fill="#c084fc" font-size="11" font-weight="600">FC Port 1: </text><text x="95" y="75" fill="#8b949e" font-size="10">Target to R640 HBA 2 (16Gb)</text>
+        <text x="30" y="95" fill="#c084fc" font-size="11" font-weight="600">FC Port 2: </text><text x="95" y="95" fill="#8b949e" font-size="10">Target to R720xd HBA 2 (16Gb)</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- Connectors from Servers to Storage (Direct 16Gb Fibre Channel MPIO) -->
+  <!-- R450 to MD3800f Ctrl 0 & Ctrl 1 -->
+  <path d="M 180 670 L 180 720 L 280 720 L 280 870" fill="none" stroke="#c084fc" stroke-width="2.5"/>
+  <path d="M 210 670 L 210 730 L 620 730 L 620 870" fill="none" stroke="#c084fc" stroke-width="2.5"/>
+
+  <!-- R640 to MD3800f Ctrl 0 & Ctrl 1 -->
+  <path d="M 530 670 L 530 720 L 380 720 L 380 870" fill="none" stroke="#c084fc" stroke-width="2.5"/>
+  <path d="M 570 670 L 570 715 L 700 715 L 700 870" fill="none" stroke="#c084fc" stroke-width="2.5"/>
+
+  <!-- R720xd to MD3800f Ctrl 0 & Ctrl 1 -->
+  <path d="M 870 670 L 870 725 L 450 725 L 450 870" fill="none" stroke="#c084fc" stroke-width="2.5"/>
+  <path d="M 910 670 L 910 735 L 780 735 L 780 870" fill="none" stroke="#c084fc" stroke-width="2.5"/>
+
+  <!-- OOB Mgmt connection to MD3800f Controllers -->
+  <path d="M 980 385 L 980 880 L 960 880" fill="none" stroke="#34d399" stroke-width="2" stroke-dasharray="4,3"/>
+  <rect x="910" y="870" width="130" height="18" rx="4" fill="#161b22" stroke="#34d399" stroke-width="1"/>
+  <text x="975" y="883" fill="#34d399" font-size="10" text-anchor="middle">SAN Mgmt (SANtricity)</text>
+
+  <!-- Labels on FC paths -->
+  <rect x="290" y="710" width="120" height="18" rx="4" fill="#161b22" stroke="#c084fc" stroke-width="1"/>
+  <text x="350" y="723" fill="#c084fc" font-size="10" text-anchor="middle">16Gb FC Fabric A</text>
+
+  <rect x="680" y="710" width="120" height="18" rx="4" fill="#161b22" stroke="#c084fc" stroke-width="1"/>
+  <text x="740" y="723" fill="#c084fc" font-size="10" text-anchor="middle">16Gb FC Fabric B (MPIO)</text>
+
+  <!-- FOOTER -->
+  <g transform="translate(50, 1065)">
+    <text x="0" y="0" fill="#8b949e" font-size="11">Architecture Note: High-availability design featuring active-active 10GbE server bonds, dual-controller 16Gbps direct-attached Fibre Channel MPIO, and isolated Out-of-Band management.</text>
+  </g>
+</svg>
